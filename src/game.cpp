@@ -85,4 +85,6 @@ void Game::move_player(int x, int y)
     TileID tile_id = _dl.at(target);
     if (TileData::from_id(tile_id).solid == false)
         _player.move_relative(x, y);
+    else if (tile_id == TileID::DoorClosed)
+        _dl.set(target, TileID::DoorOpen);
 }

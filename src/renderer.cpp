@@ -25,18 +25,32 @@ static wish_unicode s_walls[] = {
     0x253c
 };
 
+static bool tile_need_connect(TileID tile_id)
+{
+    switch (tile_id)
+    {
+        case TileID::Wall:
+        case TileID::DoorClosed:
+        case TileID::DoorLocked:
+        case TileID::DoorOpen:
+            return true;
+        default:
+            return false;
+    }
+}
+
 static wish_unicode wall_symbol(const DungeonLevel& dl, int x, int y)
 {
     int score;
 
     score = 0;
-    if (dl.at(x + 1, y) == TileID::Wall)
+    if (tile_need_connect(dl.at(x + 1, y)))
         score |= (1 << 0);
-    if (dl.at(x - 1, y) == TileID::Wall)
+    if (tile_need_connect(dl.at(x - 1, y)))
         score |= (1 << 1);
-    if (dl.at(x, y + 1) == TileID::Wall)
+    if (tile_need_connect(dl.at(x, y + 1)))
         score |= (1 << 3);
-    if (dl.at(x, y - 1) == TileID::Wall)
+    if (tile_need_connect(dl.at(x, y - 1)))
         score |= (1 << 2);
     return s_walls[score];
 }
@@ -57,10 +71,10 @@ void Renderer::render_level(const DungeonLevel& dl)
         {
             TileID tile_id = dl.at(x, y);
             const TileData& tile_data = TileData::from_id(tile_id);
-            if (tile_id == TileID::Wall)
+            cp = tile_data.sym;
+            if (cp == 0 && tile_need_connect(tile_id))
                 cp = wall_symbol(dl, x, y);
-            else
-                cp = tile_data.sym;
+            wish_color(&attr, tile_data.color);
             wish_putchar(view, cp, attr);
         }
     }
