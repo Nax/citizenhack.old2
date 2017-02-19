@@ -3,7 +3,7 @@
 
 #include <non_copyable.h>
 #include <screen.h>
-#include <dungeon_generator_standard.h>
+#include <dungeon.h>
 #include <monster.h>
 #include <renderer.h>
 
@@ -19,11 +19,12 @@ public:
     void    update();
 
     void    move_player(int x, int y);
+    void    move_player_dlevel(int delta);
 
 private:
     Screen&         _screen;
     Renderer        _renderer;
-    DungeonLevel    _dl;
+    Dungeon         _dungeon;
     Monster         _player;
     bool            _over;
 };

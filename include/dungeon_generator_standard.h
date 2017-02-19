@@ -11,6 +11,8 @@ public:
     DungeonGeneratorStandard(DungeonLevel& level) : _level(level) {}
     ~DungeonGeneratorStandard() {}
 
+    void        populate_rooms();
+    Vector2i    room_rand_tile(Rect2i room);
     Vector2i    room_door(Rect2i room);
     Vector2i    room_rand_wall(Rect2i room);
     void        make_path(Vector2i src, Vector2i dst);

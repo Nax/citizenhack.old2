@@ -2,8 +2,10 @@
 
 Game::Game(Screen& screen) : _screen(screen), _renderer(screen), _player(MonsterID::Human)
 {
-    DungeonGeneratorStandard::generate(_dl);
-    _player.move(12, 12);
+    Vector2i start_pos;
+
+    start_pos = _dungeon.level(0).scan(TileID::StaircaseUp);
+    _player.move(start_pos.x, start_pos.y);
 }
 
 Game::~Game()
@@ -27,8 +29,9 @@ void Game::loop()
 void Game::render()
 {
     _screen.clear();
-    _renderer.render_level(_dl);
+    _renderer.render_level(_dungeon.level(_player.dlevel()), _player);
     _renderer.render_monster(_player);
+    _renderer.render_status(_player);
     _screen.swap();
 }
 
@@ -66,6 +69,12 @@ void Game::handleEvent()
         case 'n':
             move_player(1, 1);
             break;
+        case '>':
+            move_player_dlevel(1);
+            break;
+        case '<':
+            move_player_dlevel(-1);
+            break;
     }
 }
 
@@ -76,15 +85,33 @@ void Game::update()
 
 void Game::move_player(int x, int y)
 {
+    DungeonLevel& level = _dungeon.level(_player.dlevel());
     Vector2i target;
 
     target = _player.pos();
     target.x += x;
     target.y += y;
 
-    TileID tile_id = _dl.at(target);
+    TileID tile_id = level.at(target);
     if (TileData::from_id(tile_id).solid == false)
         _player.move_relative(x, y);
     else if (tile_id == TileID::DoorClosed)
-        _dl.set(target, TileID::DoorOpen);
+        level.set(target, TileID::DoorOpen);
+}
+
+void Game::move_player_dlevel(int delta)
+{
+    TileID src_tile;
+    TileID dst_tile;
+    Vector2i target;
+
+    src_tile = TileID::StaircaseDown;
+    dst_tile = TileID::StaircaseUp;
+    if (delta < 0)
+        std::swap(src_tile, dst_tile);
+    if (_dungeon.level(_player.dlevel()).at(_player.pos()) != src_tile)
+        return;
+    _player.move_dlevel_relative(delta);
+    target = _dungeon.level(_player.dlevel()).scan(dst_tile);
+    _player.move(target.x, target.y);
 }

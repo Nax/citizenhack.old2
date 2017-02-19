@@ -1,6 +1,32 @@
 #include <cstdlib>
 #include <dungeon_generator_standard.h>
 
+void DungeonGeneratorStandard::populate_rooms()
+{
+    size_t indices[2];
+
+    indices[0] = rand() % _rooms.size();
+    do
+    {
+        indices[1] = rand() % _rooms.size();
+    } while (indices[0] == indices[1]);
+    _level.set(room_rand_tile(_rooms[indices[0]]), TileID::StaircaseUp);
+    _level.set(room_rand_tile(_rooms[indices[1]]), TileID::StaircaseDown);
+}
+
+Vector2i DungeonGeneratorStandard::room_rand_tile(Rect2i room)
+{
+    Vector2i pos;
+    size_t off_x;
+    size_t off_y;
+
+    off_x = rand() % (room.size.x - 2) + 1;
+    off_y = rand() % (room.size.y - 2) + 1;
+    pos.x = room.origin.x + off_x;
+    pos.y = room.origin.y + off_y;
+    return pos;
+}
+
 Vector2i DungeonGeneratorStandard::room_door(Rect2i room)
 {
     Vector2i pos;
@@ -231,14 +257,20 @@ bool DungeonGeneratorStandard::try_make_room(Rect2i room)
 
 void DungeonGeneratorStandard::make_room(Rect2i room)
 {
+    Vector2i pos;
+
     for (int j = 0; j < room.size.y; ++j)
     {
         for (int i = 0; i < room.size.x; ++i)
         {
+            pos.x = room.origin.x + i;
+            pos.y = room.origin.y + j;
+
             if (i == 0 || i == (room.size.x - 1) || j == 0 || j == (room.size.y - 1))
-                _level.set(room.origin.x + i, room.origin.y + j, TileID::Wall);
+                _level.set(pos, TileID::Wall);
             else
-                _level.set(room.origin.x + i, room.origin.y + j, TileID::Ground);
+                _level.set(pos, TileID::Ground);
+            _level.light(pos);
         }
     }
 }
@@ -249,4 +281,5 @@ void DungeonGeneratorStandard::run()
     _level.fill(TileID::Rock);
     make_rooms();
     link_all_rooms();
+    populate_rooms();
 }

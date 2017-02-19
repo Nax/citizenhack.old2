@@ -19,6 +19,7 @@ public:
     wish_view*  fullscreen;
     wish_view*  msg_bar;
     wish_view*  main_view;
+    wish_view*  status_bar;
 };
 
 #endif

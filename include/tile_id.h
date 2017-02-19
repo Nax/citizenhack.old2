@@ -10,7 +10,9 @@ enum class TileID : unsigned char
     Corridor,
     DoorOpen,
     DoorClosed,
-    DoorLocked
+    DoorLocked,
+    StaircaseUp,
+    StaircaseDown
 };
 
 #endif
