@@ -4,7 +4,7 @@
 #include <wish.h>
 #include "non_copyable.h"
 
-struct Screen : public NonCopyable
+class Screen : public NonCopyable
 {
 public:
     Screen();

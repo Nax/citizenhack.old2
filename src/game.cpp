@@ -1,11 +1,12 @@
 #include <game.h>
 
-Game::Game(Screen& screen) : _screen(screen), _renderer(screen), _player(MonsterID::Human)
+Game::Game(Screen& screen) : _screen(screen), _msg_system(*this, screen), _renderer(screen), _player(ActorID::Human)
 {
     Vector2i start_pos;
 
     start_pos = _dungeon.level(0).scan(TileID::StaircaseUp);
     _player.move(start_pos.x, start_pos.y);
+    _msg_system.puts("Welcome to CitizenHack!");
 }
 
 Game::~Game()
@@ -20,18 +21,21 @@ void Game::loop()
     while (!_over)
     {
         handleEvent();
-        render();
         update();
-
+        render();
     }
 }
 
 void Game::render()
 {
+    DungeonLevel& dl = _dungeon.level(_player.dlevel());
     _screen.clear();
-    _renderer.render_level(_dungeon.level(_player.dlevel()), _player);
-    _renderer.render_monster(_player);
+    _renderer.render_level(dl, _player);
+    for (auto& m : dl.actors())
+        _renderer.render_actor(dl, _player, m);
+    _renderer.render_actor(dl, _player, _player);
     _renderer.render_status(_player);
+    _renderer.render_message(_msg_system.message());
     _screen.swap();
 }
 
@@ -40,6 +44,7 @@ void Game::handleEvent()
     wish_unicode cp;
 
     cp = _screen.getchar();
+    _msg_system.clear();
     switch (cp)
     {
         case 'q':
@@ -80,7 +85,7 @@ void Game::handleEvent()
 
 void Game::update()
 {
-
+    _dungeon.level(_player.dlevel()).spawn_random_actor_tick(1);
 }
 
 void Game::move_player(int x, int y)

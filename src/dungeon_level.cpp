@@ -157,6 +157,51 @@ void DungeonLevel::remember(Vector2i pos, Symbol sym)
         _image[i] = sym;
 }
 
+bool DungeonLevel::spawn_actor(ActorID actor, Vector2i position)
+{
+    if (TileData::from_id(at(position)).solid)
+        return false;
+    _actors.emplace_back(actor);
+    _actors.back().move(position.x, position.y);
+    return true;
+}
+
+bool DungeonLevel::spawn_random_actor(int difficulty)
+{
+    ActorID tmp;
+    ActorID actor;
+    Vector2i pos;
+
+    actor = ActorID::None;
+    for (size_t i = 0; i < 50; ++i)
+    {
+        tmp = ActorData::random_id();
+        const ActorData& data = ActorData::from_id(tmp);
+        if (data.difficulty <= difficulty && data.difficulty > 0)
+        {
+            actor = tmp;
+            break;
+        }
+    }
+    if (actor == ActorID::None)
+        return false;
+    for (size_t i = 0; i < 100; ++i)
+    {
+        pos.x = rand() % _size.x;
+        pos.y = rand() % _size.y;
+        if (spawn_actor(actor, pos))
+            return true;
+    }
+    return false;
+}
+
+bool DungeonLevel::spawn_random_actor_tick(int difficulty)
+{
+    if (rand() % (20 * (_actors.size() + 1)))
+        return false;
+    return spawn_random_actor(difficulty);
+}
+
 int DungeonLevel::index(int x, int y) const
 {
     if (x < 0 || x >= _size.x || y < 0 || y >= _size.y)

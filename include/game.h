@@ -4,8 +4,9 @@
 #include <non_copyable.h>
 #include <screen.h>
 #include <dungeon.h>
-#include <monster.h>
+#include <actor.h>
 #include <renderer.h>
+#include <msg_system.h>
 
 class Game : public NonCopyable
 {
@@ -22,11 +23,12 @@ public:
     void    move_player_dlevel(int delta);
 
 private:
-    Screen&         _screen;
-    Renderer        _renderer;
-    Dungeon         _dungeon;
-    Monster         _player;
-    bool            _over;
+    Screen&                 _screen;
+    MsgSystem               _msg_system;
+    Renderer                _renderer;
+    Dungeon                 _dungeon;
+    Actor                 _player;
+    bool                    _over;
 };
 
 #endif

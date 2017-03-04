@@ -55,7 +55,19 @@ static wish_unicode wall_symbol(const DungeonLevel& dl, int x, int y)
     return s_walls[score];
 }
 
-void Renderer::render_level(DungeonLevel& dl, const Monster& player)
+static bool check_visibility(const DungeonLevel& dl, const Actor& player, Vector2i target)
+{
+    Vector2i player_pos;
+
+    player_pos = player.pos();
+    if (target.x >= player_pos.x - 1 && target.x <= player_pos.x + 1 && target.y >= player_pos.y - 1 && target.y <= player_pos.y + 1)
+        return true;
+    else if (dl.lit(target) && dl.check_los(player_pos, target))
+        return true;
+    return false;
+}
+
+void Renderer::render_level(DungeonLevel& dl, const Actor& player)
 {
     wish_attr attr;
     wish_unicode cp;
@@ -63,17 +75,26 @@ void Renderer::render_level(DungeonLevel& dl, const Monster& player)
     Vector2i level_size = dl.size();
     Vector2i tmp;
     Symbol sym;
+    bool visible;
+    Vector2i player_pos;
 
+    player_pos = player.pos();
     view = _screen.main_view;
     for (int y = 0; y < level_size.y; ++y)
     {
         wish_move(view, 0, y);
         for (int x = 0; x < level_size.x; ++x)
         {
+            visible = false;
             tmp.x = x;
             tmp.y = y;
             wish_attr_init(&attr);
-            if (dl.check_los(player.pos(), tmp) == false)
+            if (x >= player_pos.x - 1 && x <= player_pos.x + 1
+                    && y >= player_pos.y - 1 && y <= player_pos.y + 1)
+                visible = true;
+            else if (dl.lit(tmp) && dl.check_los(player_pos, tmp))
+                visible = true;
+            if (!visible)
             {
                 sym = dl.remembered_sym(tmp);
                 wish_color(&attr, sym.color);
@@ -85,7 +106,10 @@ void Renderer::render_level(DungeonLevel& dl, const Monster& player)
             cp = tile_data.sym;
             if (cp == 0 && tile_need_connect(tile_id))
                 cp = wall_symbol(dl, x, y);
-            wish_color(&attr, tile_data.color);
+            if (tile_data.lit_color != -1)
+                wish_color(&attr, tile_data.lit_color);
+            else
+                wish_color(&attr, tile_data.color);
             wish_putchar(view, cp, attr);
             sym = Symbol();
             sym.sym = cp;
@@ -95,25 +119,70 @@ void Renderer::render_level(DungeonLevel& dl, const Monster& player)
     }
 }
 
-void Renderer::render_monster(const Monster& mon)
+void Renderer::render_actor(const DungeonLevel& dl, const Actor& player, const Actor& mon)
 {
     wish_attr attr;
     wish_view* view;
     wish_unicode cp;
 
-    view = _screen.main_view;
-    wish_attr_init(&attr);
-    cp = mon.monster_data().sym;
-    wish_mvputchar(view, mon.pos().x, mon.pos().y, cp, attr);
-    wish_cursor_move(view, mon.pos().x, mon.pos().y);
+    if (check_visibility(dl, player, mon.pos()))
+    {
+        view = _screen.main_view;
+        wish_attr_init(&attr);
+        cp = mon.actor_data().actor_class().sym;
+        wish_color(&attr, mon.actor_data().color);
+        wish_attr_set(&attr, mon.actor_data().flags);
+        wish_mvputchar(view, mon.pos().x, mon.pos().y, cp, attr);
+        wish_cursor_move(view, mon.pos().x, mon.pos().y);
+    }
 }
 
-void Renderer::render_status(const Monster& player)
+void Renderer::render_status(const Actor& player)
+{
+    wish_attr attr;
+    wish_view* view;
+    const Stats& stats = player.stats();
+    int strength_major;
+    int strength_minor;
+
+    strength_major = stats.strength;
+    if (strength_major > 118)
+        strength_major -= 100;
+    else if (strength_major >= 18)
+    {
+        strength_minor = strength_major - 18;
+        strength_major = 18;
+    }
+    view = _screen.status_bar;
+    wish_attr_init(&attr);
+    wish_move(view, 10, 0);
+    if (strength_major == 18)
+    {
+        if (strength_minor == 100)
+            wish_puts(view, "St:18/**", attr);
+        else
+            wish_printf(view, "St:18/%02d", attr, strength_minor);
+    }
+    else
+        wish_printf(view, "St:%-2d", attr, strength_major);
+    wish_puts(view, " ", attr);
+    wish_printf(view, "Dx:%-2d ", attr, stats.dexterity);
+    wish_printf(view, "Co:%-2d ", attr, stats.constitution);
+    wish_printf(view, "In:%-2d ", attr, stats.intelligence);
+    wish_printf(view, "Wi:%-2d ", attr, stats.wisdom);
+    wish_printf(view, "Ch:%-2d ", attr, stats.charisma);
+    wish_mvprintf(view, 0, 1, "Dlvl:%-2d   ", attr, player.dlevel() + 1);
+    wish_printf(view, "HP:%d(%d) ", attr, stats.hp, stats.hp);
+    wish_printf(view, "Mana:%d(%d) ", attr, stats.mana, stats.mana);
+    wish_printf(view, "AC:%d", attr, stats.ac);
+}
+
+void Renderer::render_message(const char* str)
 {
     wish_attr attr;
     wish_view* view;
 
-    view = _screen.status_bar;
+    view = _screen.msg_bar;
     wish_attr_init(&attr);
-    wish_mvprintf(view, 0, 1, "Dlvl:%-2d", attr, player.dlevel() + 1);
+    wish_mvputs(view, 0, 0, str, attr);
 }

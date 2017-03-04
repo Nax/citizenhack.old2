@@ -16,3 +16,44 @@ include_directories(include)
 
 add_executable(citizenhack ${SOURCES})
 target_link_libraries(citizenhack libwish)
+
+file(GLOB_RECURSE DATA_FILES "${CMAKE_SOURCE_DIR}/data/*")
+file(GLOB_RECURSE SCRIPT_FILES "${CMAKE_SOURCE_DIR}/script/**/*.rb")
+
+add_custom_command(
+    OUTPUT
+    "${CMAKE_BINARY_DIR}/data"
+    DEPENDS
+    ${DATA_FILES}
+    ${SCRIPT_FILES}
+    "${CMAKE_SOURCE_DIR}/script/make_data"
+    COMMAND
+    "${CMAKE_SOURCE_DIR}/script/make_data"
+    "${CMAKE_SOURCE_DIR}/data"
+    "${CMAKE_BINARY_DIR}/data"
+    COMMENT
+    "Building data files"
+    VERBATIM
+)
+
+add_custom_command(
+    OUTPUT
+    "${CMAKE_BINARY_DIR}/lib/citizenhack/data.bin"
+    DEPENDS
+    "${CMAKE_BINARY_DIR}/data"
+    "${CMAKE_SOURCE_DIR}/script/make_archive"
+    COMMAND
+    "${CMAKE_SOURCE_DIR}/script/make_archive"
+    "${CMAKE_BINARY_DIR}/data"
+    "${CMAKE_BINARY_DIR}/lib/citizenhack/data.bin"
+    COMMENT
+    "Building data archive"
+    VERBATIM
+)
+
+add_custom_target(
+    data_files
+    DEPENDS
+    "${CMAKE_BINARY_DIR}/lib/citizenhack/data.bin"
+)
+add_dependencies(citizenhack data_files)

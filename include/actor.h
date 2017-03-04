@@ -1,18 +1,19 @@
-#ifndef MONSTER_H
-#define MONSTER_H
+#ifndef ACTOR_H
+#define ACTOR_H
 
 #include <vector.h>
-#include <monster_data.h>
+#include <actor_data.h>
 
-class Monster
+class Actor
 {
 public:
-    Monster(MonsterID monster_id) : _monster_id(monster_id), _dlevel(0) {}
-    ~Monster() {}
+    Actor(ActorID actor_id);
+    ~Actor() {}
 
+    const Stats&        stats() const { return _stats; }
     int                 dlevel() const { return _dlevel; }
-    MonsterID           monster_id() const { return _monster_id; }
-    const MonsterData&  monster_data() const { return MonsterData::from_id(_monster_id); }
+    ActorID           actor_id() const { return _actor_id; }
+    const ActorData&  actor_data() const { return ActorData::from_id(_actor_id); }
     Vector2i            pos() const { return _pos; }
 
     void    move(int x, int y);
@@ -21,7 +22,8 @@ public:
     void    move_dlevel_relative(int d);
 
 private:
-    MonsterID   _monster_id;
+    ActorID     _actor_id;
+    Stats       _stats;
     Vector2i    _pos;
     int         _dlevel;
 };

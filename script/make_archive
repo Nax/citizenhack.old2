@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.dirname(__FILE__) + '/lib')
+
+require 'fileutils'
+require 'archive'
+
+src, dst = *ARGV
+
+FileUtils.mkpath(File.dirname(dst))
+Archive.create(dst, src)

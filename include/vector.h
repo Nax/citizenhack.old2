@@ -65,7 +65,7 @@ struct VectorData<T, 3>
 template <typename T, int N>
 struct VectorBuilder
 {
-    template <int Count, typename... Args>
+    template <typename... Args>
     static void build(size_t count, T* ptr)
     {
         (void)count;
@@ -75,10 +75,8 @@ struct VectorBuilder
     template <typename... Args>
     static void build(size_t count, T* ptr, T head, Args... args)
     {
-        //static_assert(count < N, "Too many elements");
-
         ptr[count] = head;
-        build(count + 1, ptr, std::forward<Args>(args)...);
+        VectorBuilder<T, N>::build(count + 1, ptr, std::forward<Args>(args)...);
     }
 };
 

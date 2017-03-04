@@ -11,6 +11,7 @@ struct TileData
     int             color;
     int             bcolor;
     int             flags;
+    int             lit_color;
     bool            solid:1;
 
     static const TileData& from_id(TileID id)

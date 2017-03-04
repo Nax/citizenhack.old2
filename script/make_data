@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.dirname(__FILE__) + '/lib')
+
+require 'fileutils'
+
+require 'identifier_pool'
+require 'data_file'
+require 'actor_class'
+
+EXPORT = [
+  ActorClass
+]
+
+id_pool = IdentifierPool.new
+
+src, dst = *ARGV
+
+Dir.chdir(src) do
+  dirs = Dir["*"]
+  dirs.each do |dir|
+    category = dir.capitalize.gsub(/_([a-z])/){|m| m[1].upcase}
+    files = Dir[dir + "/**/*"].select{|f| File.file?(f)}
+    files.each do |file|
+      df = DataFile.parse(file)
+      identifier = df['ID']
+      id_pool.push(category, identifier)
+    end
+  end
+end
+
+FileUtils.mkpath(dst)
+FileUtils.touch(dst)
+
+EXPORT.each do |export|
+  export.export(id_pool, src, dst)
+end
