@@ -14,7 +14,7 @@ EXPORT = [
 
 id_pool = IdentifierPool.new
 
-src, dst = *ARGV
+src, dst, headers_dst = *ARGV
 
 Dir.chdir(src) do
   dirs = Dir["*"]
@@ -30,8 +30,11 @@ Dir.chdir(src) do
 end
 
 FileUtils.mkpath(dst)
+FileUtils.mkpath(headers_dst)
 FileUtils.touch(dst)
 
 EXPORT.each do |export|
   export.export(id_pool, src, dst)
 end
+
+id_pool.generate_headers(headers_dst)

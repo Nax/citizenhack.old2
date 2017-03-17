@@ -1,0 +1,12 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define PREFIX_DIR  "@CMAKE_INSTALL_PREFIX@"
+#define DATA_DIR    "@GAME_DATA_DIR@"
+#define RUNTIME_DIR "@GAME_RUNTIME_DIR@"
+
+#ifndef NDEBUG
+# define DEBUG  1
+#endif
+
+#endif

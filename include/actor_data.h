@@ -10,7 +10,7 @@ struct ActorData
 {
     const char*     str;
     int             difficulty;
-    ActorClassID  actor_class_id;
+    ActorClassID    actor_class_id;
     int             color;
     int             flags;
     Stats           stats;

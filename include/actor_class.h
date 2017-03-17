@@ -2,20 +2,14 @@
 #define ACTOR_CLASS_H
 
 #include <wish.h>
-
-enum class ActorClassID
-{
-    None,
-    Humanoid,
-    Reptile
-};
+#include <actor_class_id.h>
 
 struct ActorClass
 {
 public:
     wish_unicode    sym;
 
-    static const ActorClass actor_classes[];
+    static ActorClass* actor_classes;
 
     static const ActorClass& from_id(ActorClassID actor_class_id)
     {
