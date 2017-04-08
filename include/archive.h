@@ -24,7 +24,7 @@ public:
 
 private:
     std::map<std::string, Entry>    _entries;
-    std::ifstream                   _stream;
+    mutable std::ifstream           _stream;
     size_t                          _header_size;
 };
 

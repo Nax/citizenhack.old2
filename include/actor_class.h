@@ -3,6 +3,7 @@
 
 #include <wish.h>
 #include <actor_class_id.h>
+#include <archive.h>
 
 struct ActorClass
 {
@@ -15,6 +16,8 @@ public:
     {
         return actor_classes[static_cast<int>(actor_class_id)];
     }
+
+    static void load(const Archive& archive);
 };
 
 #endif

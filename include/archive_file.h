@@ -12,7 +12,7 @@ public:
     ArchiveFile();
     ~ArchiveFile();
 
-    void    open(Archive& archive, const char* path);
+    void    open(const Archive& archive, const char* path);
     void    close();
     void    read(char* dst, size_t size);
     

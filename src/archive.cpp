@@ -38,16 +38,19 @@ void Archive::open(const char* path)
 
 size_t Archive::read(char* dst, const char* path) const
 {
-    auto entry = _entries.at(path);
+    const auto entry = _entries.find(path);
 
-    if (entry == _entries.end())
+    if (entry == _entries.cend())
         return 0;
+
+    const Archive::Entry* e = &entry->second;
+
     if (dst)
     {
-        _stream.seekg(_header_size + entry->offset);
-        _stream.read(dst, entry->size);
+        _stream.seekg(_header_size + e->offset);
+        _stream.read(dst, e->size);
     }
-    return entry->size;
+    return e->size;
 }
 
 void Archive::close()

@@ -11,14 +11,17 @@ ArchiveFile::~ArchiveFile()
     close();
 }
 
-void ArchiveFile::open(Archive& archive, const char* path)
+void ArchiveFile::open(const Archive& archive, const char* path)
 {
-
+    close();
+    _size = archive.read(nullptr, path);
+    _data = new char[_size];
+    archive.read(_data, path);
 }
 
 void ArchiveFile::close()
 {
-    delete _data;
+    delete [] _data;
     _data = nullptr;
     _size = 0;
     _cursor = 0;
