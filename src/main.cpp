@@ -5,6 +5,7 @@
 #include <config.h>
 #include <archive.h>
 #include <actor_class.h>
+#include <actor_data.h>
 
 static void load_game_data()
 {
@@ -12,6 +13,7 @@ static void load_game_data()
 
     archive.open(DATA_DIR "/data.bin");
     ActorClass::load(archive);
+    ActorData::load(archive);
 }
 
 int main(int argc, char** argv)

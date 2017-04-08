@@ -71,6 +71,10 @@ constexpr const uint32_t #{@name}Count = #{@data.size};
     @categories.values
   end
 
+  def [](category)
+    @categories[category]
+  end
+
   def generate_headers(path)
     Dir.chdir(path) do
       @categories.each do |name, value|

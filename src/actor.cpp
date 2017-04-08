@@ -2,7 +2,8 @@
 
 Actor::Actor(ActorID actor_id) : _actor_id(actor_id), _dlevel(0)
 {
-    _stats = actor_data().stats;
+    //_stats = actor_data().stats;
+    _stats = {0};
 }
 
 void Actor::move(int x, int y)

@@ -5,26 +5,27 @@
 #include <actor_class.h>
 #include <actor_id.h>
 #include <stats.h>
+#include <archive.h>
 
 struct ActorData
 {
-    const char*     str;
-    int             difficulty;
     ActorClassID    actor_class_id;
+    int             difficulty;
     int             color;
     int             flags;
-    Stats           stats;
 
     const ActorClass& actor_class() const { return ActorClass::from_id(actor_class_id); }
 
-    static const ActorData actors[];
+    static ActorData* actors_data;
 
     static const ActorData& from_id(ActorID actor)
     {
-        return actors[static_cast<int>(actor)];
+        return actors_data[static_cast<int>(actor)];
     }
 
     static ActorID random_id();
+
+    static void load(const Archive& archive);
 };
 
 #endif

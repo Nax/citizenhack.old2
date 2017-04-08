@@ -1,28 +1,32 @@
 #include <actor_data.h>
+#include <archive_file.h>
 
-const ActorData ActorData::actors[] = {
-    {},
-    {
-        "human",
-        0,
-        ActorClassID::Humanoid,
-        7,
-        0,
-        {10, 16, 8, 18, 14, 16, 16, 17, 12, 10}
-    },
-    {
-        "newt",
-        1,
-        ActorClassID::Reptile,
-        3,
-        WISH_BOLD,
-        {1, 6, 0, 3, 3, 3, 3, 3, 3, 3}
-    }
-};
+ActorData* ActorData::actors_data = nullptr;
 
 ActorID ActorData::random_id()
 {
-    static constexpr const size_t max = sizeof(ActorData::actors) / sizeof(ActorData);
+    return static_cast<ActorID>((rand() % (ActorCount - 1)) + 1);
+}
 
-    return static_cast<ActorID>((rand() % (max - 1)) + 1);
+void ActorData::load(const Archive& archive)
+{
+    ArchiveFile file;
+    ActorData*  actors;
+    uint64_t    count;
+
+    file.open(archive, "actor");
+    count = file.read64u();
+    actors = new ActorData[count + 1];
+    memset(actors, 0, sizeof(ActorData) * (count + 1));
+
+    for (uint64_t i = 0; i < count; ++i)
+    {
+        ActorData* a = (actors + i + 1);
+
+        a->actor_class_id = static_cast<ActorClassID>(file.read16u());
+        a->difficulty = file.read8u();
+        a->color = file.read8u();
+    }
+
+    ActorData::actors_data = actors;
 }

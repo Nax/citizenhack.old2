@@ -1,3 +1,4 @@
-ID      = Newt
-Class   = Reptile
-Color   = 3
+ID          = Newt
+Class       = Reptile
+Color       = 3
+Difficulty  = 1

@@ -7,9 +7,11 @@ require 'fileutils'
 require 'identifier_pool'
 require 'data_file'
 require 'actor_class'
+require 'actor'
 
 EXPORT = [
-  ActorClass
+  ActorClass,
+  Actor
 ]
 
 id_pool = IdentifierPool.new

@@ -12,8 +12,8 @@ public:
 
     const Stats&        stats() const { return _stats; }
     int                 dlevel() const { return _dlevel; }
-    ActorID           actor_id() const { return _actor_id; }
-    const ActorData&  actor_data() const { return ActorData::from_id(_actor_id); }
+    ActorID             actor_id() const { return _actor_id; }
+    const ActorData&    actor_data() const { return ActorData::from_id(_actor_id); }
     Vector2i            pos() const { return _pos; }
 
     void    move(int x, int y);
