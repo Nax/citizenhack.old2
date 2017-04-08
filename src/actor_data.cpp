@@ -23,7 +23,7 @@ void ActorData::load(const Archive& archive)
     {
         ActorData* a = (actors + i + 1);
 
-        a->actor_class_id = static_cast<ActorClassID>(file.read16u());
+        a->actor_class_id = static_cast<ActorClassID>(file.read8u());
         a->difficulty = file.read8u();
         a->color = file.read8u();
     }
