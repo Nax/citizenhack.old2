@@ -3,10 +3,9 @@
 
 struct Stats
 {
-public:
     int     level;
     int     hp;
-    int     mana;
+    int     mp;
     int     strength;
     int     dexterity;
     int     wisdom;
@@ -14,6 +13,7 @@ public:
     int     constitution;
     int     charisma;
     int     ac;
+    int     speed;
 };
 
 #endif

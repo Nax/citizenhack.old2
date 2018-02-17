@@ -1,6 +1,12 @@
 #include <game.h>
 
-Game::Game(Screen& screen) : _screen(screen), _msg_system(*this, screen), _renderer(screen), _player(ActorID::Human)
+Game::Game(Screen& screen)
+: _screen(screen)
+, _msg_system(*this, screen)
+, _renderer(screen)
+, _player(ActorID::Human)
+, _turn(0)
+, _subturn(0)
 {
     Vector2i start_pos;
 
@@ -34,7 +40,7 @@ void Game::render()
     for (auto& m : dl.actors())
         _renderer.render_actor(dl, _player, m);
     _renderer.render_actor(dl, _player, _player);
-    _renderer.render_status(_player);
+    _renderer.render_status(*this, _player);
     _renderer.render_message(_msg_system.message());
     _screen.swap();
 }
@@ -86,6 +92,7 @@ void Game::handleEvent()
 void Game::update()
 {
     _dungeon.level(_player.dlevel()).spawn_random_actor_tick(1);
+    take_turns();
 }
 
 void Game::move_player(int x, int y)
@@ -119,4 +126,32 @@ void Game::move_player_dlevel(int delta)
     _player.move_dlevel_relative(delta);
     target = _dungeon.level(_player.dlevel()).scan(dst_tile);
     _player.move(target.x, target.y);
+}
+
+void Game::take_turns()
+{
+    for (;;)
+    {
+        _subturn++;
+        if (_subturn == 10)
+        {
+            _subturn = 0;
+            on_turn();
+        }
+        auto& actors = _dungeon.level(_player.dlevel()).actors();
+        for (auto& a : actors)
+        {
+            if (a.ct_check())
+            {
+                // TODO: call AI
+            }
+        }
+        if (_player.ct_check())
+            return;
+    }
+}
+
+void Game::on_turn()
+{
+    _turn++;
 }

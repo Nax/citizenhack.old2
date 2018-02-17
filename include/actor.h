@@ -21,10 +21,13 @@ public:
     void    move_dlevel(int dlevel);
     void    move_dlevel_relative(int d);
 
+    bool    ct_check();
+
 private:
     ActorID     _actor_id;
     Stats       _stats;
     Vector2i    _pos;
+    int         _ct;
     int         _dlevel;
 };
 

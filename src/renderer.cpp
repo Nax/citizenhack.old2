@@ -1,5 +1,6 @@
 #include <renderer.h>
 #include <dungeon_level.h>
+#include <game.h>
 
 // Right = 1
 // Left  = 2
@@ -137,7 +138,7 @@ void Renderer::render_actor(const DungeonLevel& dl, const Actor& player, const A
     }
 }
 
-void Renderer::render_status(const Actor& player)
+void Renderer::render_status(const Game& game, const Actor& player)
 {
     wish_attr attr;
     wish_view* view;
@@ -173,8 +174,9 @@ void Renderer::render_status(const Actor& player)
     wish_printf(view, "Ch:%-2d ", attr, stats.charisma);
     wish_mvprintf(view, 0, 1, "Dlvl:%-2d   ", attr, player.dlevel() + 1);
     wish_printf(view, "HP:%d(%d) ", attr, stats.hp, stats.hp);
-    wish_printf(view, "Mana:%d(%d) ", attr, stats.mana, stats.mana);
-    wish_printf(view, "AC:%d", attr, stats.ac);
+    wish_printf(view, "MP:%d(%d) ", attr, stats.mp, stats.mp);
+    wish_printf(view, "AC:%d ", attr, stats.ac);
+    wish_printf(view, "Turn:%d", attr, game.turn());
 }
 
 void Renderer::render_message(const char* str)

@@ -18,6 +18,7 @@ public:
     ~DungeonLevel();
 
     std::vector<Actor>& actors() { return _actors; }
+
     Symbol      remembered_sym(Vector2i) const;
     bool        check_los(Vector2i a, Vector2i b) const;
     bool        lit(Vector2i pos) const;
@@ -46,7 +47,7 @@ private:
     TileID*                 _tiles;
     std::vector<Symbol>     _image;
     std::vector<bool>       _lit;
-    std::vector<Actor>    _actors;
+    std::vector<Actor>      _actors;
 };
 
 #endif

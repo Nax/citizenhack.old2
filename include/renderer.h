@@ -6,6 +6,7 @@
 #include <actor.h>
 
 class DungeonLevel;
+class Game;
 class Renderer : public NonCopyable
 {
 public:
@@ -14,7 +15,7 @@ public:
 
     void render_level(DungeonLevel& dl, const Actor& player);
     void render_actor(const DungeonLevel& dl, const Actor& player, const Actor& mon);
-    void render_status(const Actor& player);
+    void render_status(const Game& game, const Actor& player);
     void render_message(const char* str);
 
 private:

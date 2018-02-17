@@ -14,6 +14,8 @@ public:
     Game(Screen& screen);
     ~Game();
 
+    int     turn() const { return _turn; }
+
     void    loop();
     void    render();
     void    handleEvent();
@@ -23,12 +25,17 @@ public:
     void    move_player_dlevel(int delta);
 
 private:
+    void    take_turns();
+    void    on_turn();
+
     Screen&                 _screen;
     MsgSystem               _msg_system;
     Renderer                _renderer;
     Dungeon                 _dungeon;
-    Actor                 _player;
+    Actor                   _player;
     bool                    _over;
+    int                     _turn;
+    int                     _subturn;
 };
 
 #endif
