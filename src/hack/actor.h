@@ -1,7 +1,7 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-#include <hack/vector.h>
+#include <hack/math/vector.h>
 #include <hack/actor_data.h>
 
 class Actor

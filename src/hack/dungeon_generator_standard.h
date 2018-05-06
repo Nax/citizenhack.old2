@@ -2,8 +2,8 @@
 #define DUNGEON_GENERATOR_STANDARD_H
 
 #include <vector>
-#include <hack/dungeon_level.h>
-#include <hack/rect.h>
+#include <hack/dungeon/level.h>
+#include <hack/math/rect.h>
 
 class DungeonGeneratorStandard
 {

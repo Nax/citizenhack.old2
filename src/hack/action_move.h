@@ -2,7 +2,7 @@
 #define ACTION_MOVE_H
 
 #include <hack/action.h>
-#include <hack/dungeon_level.h>
+#include <hack/dungeon/level.h>
 #include <hack/actor.h>
 
 class ActionMove : public Action

@@ -2,7 +2,7 @@
 #define DUNGEON_H
 
 #include <vector>
-#include <hack/dungeon_level.h>
+#include <hack/dungeon/level.h>
 #include <hack/non_copyable.h>
 
 class Dungeon : public NonCopyable

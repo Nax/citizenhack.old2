@@ -3,7 +3,7 @@
 
 #include <hack/non_copyable.h>
 #include <hack/screen.h>
-#include <hack/dungeon.h>
+#include <hack/dungeon/dungeon.h>
 #include <hack/actor.h>
 #include <hack/renderer.h>
 #include <hack/msg_system.h>

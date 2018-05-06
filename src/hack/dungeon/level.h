@@ -1,9 +1,9 @@
-#ifndef DUNGEON_LEVEL_H
-#define DUNGEON_LEVEL_H
+#ifndef INCLUDED_HACK_DUNGEON_LEVEL_H
+#define INCLUDED_HACK_DUNGEON_LEVEL_H
 
 #include <vector>
 #include <hack/non_copyable.h>
-#include <hack/vector.h>
+#include <hack/math/vector.h>
 #include <hack/tile_data.h>
 #include <hack/symbol.h>
 #include <hack/actor.h>

@@ -1,5 +1,5 @@
 #include <hack/renderer.h>
-#include <hack/dungeon_level.h>
+#include <hack/dungeon/level.h>
 #include <hack/game.h>
 
 // Right = 1

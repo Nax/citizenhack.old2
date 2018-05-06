@@ -1,4 +1,4 @@
-#include <hack/dungeon.h>
+#include <hack/dungeon/dungeon.h>
 #include <hack/dungeon_generator_standard.h>
 
 Dungeon::Dungeon()

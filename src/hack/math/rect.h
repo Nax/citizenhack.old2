@@ -1,7 +1,7 @@
 #ifndef RECT_H
 #define RECT_H
 
-#include <hack/vector.h>
+#include <hack/math/vector.h>
 
 template <typename T, int N>
 class Rect

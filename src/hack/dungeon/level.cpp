@@ -1,5 +1,5 @@
 #include <cmath>
-#include <hack/dungeon_level.h>
+#include <hack/dungeon/level.h>
 
 DungeonLevel::DungeonLevel() : _tiles(nullptr)
 {
