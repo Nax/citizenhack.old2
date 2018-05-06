@@ -83,7 +83,7 @@ Vector2i DungeonLevel::scan(TileID tile)
 {
     Vector2i res;
 
-    for (size_t i = 0; i < _size.x * _size.y; ++i)
+    for (int i = 0; i < _size.x * _size.y; ++i)
     {
         if (_tiles[i] == tile)
         {

@@ -1,6 +1,7 @@
 #ifndef ARCHIVE_FILE_H
 #define ARCHIVE_FILE_H
 
+#include <cstring>
 #include <cstdint>
 #include <cstddef>
 #include <hack/non_copyable.h>
@@ -19,11 +20,14 @@ public:
     template <typename T>
     T read()
     {
-        const size_t len = sizeof(T);
+        constexpr const size_t len = sizeof(T);
+
         char tmp[len];
+        T ret;
 
         read(tmp, len);
-        return *reinterpret_cast<T*>(tmp);
+        memcpy((char*)&ret, tmp, len);
+        return ret;
     }
 
     int8_t      read8() { return read<int8_t>(); }

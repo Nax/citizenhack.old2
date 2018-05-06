@@ -28,8 +28,8 @@ struct wish_term_s
     struct termios  term_attr_backup;
     wish_size       size;
     wish_size       cursor;
-    int             display_cursor:1;
-    int             display_cursor_old:1;
+    unsigned int    display_cursor:1;
+    unsigned int    display_cursor_old:1;
 };
 
 #endif

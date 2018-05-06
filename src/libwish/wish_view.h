@@ -15,11 +15,11 @@
 
 struct wish_view_s
 {
-    wish_term*  term;
-    wish_size   origin;
-    wish_size   size;
-    wish_size   pen;
-    int         wrap:1;
+    wish_term*      term;
+    wish_size       origin;
+    wish_size       size;
+    wish_size       pen;
+    unsigned int    wrap:1;
 };
 
 #endif

@@ -2,11 +2,11 @@
 
 Actor::Actor(ActorID actor_id)
 : _actor_id(actor_id)
-, _dlevel(0)
 , _ct(0)
+, _dlevel(0)
 {
     //_stats = actor_data().stats;
-    _stats = {0};
+    _stats = Stats{};
     _stats.speed = 10;
 }
 
