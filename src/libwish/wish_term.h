@@ -13,7 +13,7 @@
 
 #include <term.h>
 #include <curses.h>
-#include <wish.h>
+#include <wish/wish.h>
 #include "wish_caps.h"
 #include "wish_buffer.h"
 #include "wish_frame.h"

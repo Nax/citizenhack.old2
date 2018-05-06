@@ -1,5 +1,5 @@
 #include <string.h>
-#include <wish.h>
+#include <wish/wish.h>
 
 size_t wish_utf8_encode(char* dst, wish_unicode cp)
 {

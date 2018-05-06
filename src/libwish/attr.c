@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <wish.h>
+#include <wish/wish.h>
 
 void wish_attr_init(wish_attr* attr)
 {

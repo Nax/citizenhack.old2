@@ -11,7 +11,7 @@
 #ifndef WISH_FRAME_H
 #define WISH_FRAME_H
 
-#include <wish.h>
+#include <wish/wish.h>
 
 struct wish_frame_s
 {
