@@ -1,0 +1,5 @@
+file(GLOB_RECURSE SOURCES "*.c")
+add_library(libwish STATIC ${SOURCES})
+set_target_properties(libwish PROPERTIES OUTPUT_NAME wish)
+target_link_libraries(libwish -lncurses)
+target_include_directories(libwish PUBLIC "${CMAKE_SOURCE_DIR}/include")
